@@ -53,3 +53,160 @@ function unitequivAdminPrepareHead()
 
     return $head;
 }
+
+function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true, $type = 'stock') {
+	
+	global $db,$langs,$conf,$user;
+	
+	dol_include_once('/product/class/product.class.php');
+	
+	$prod=new Product($db);
+	if($prod->fetch($fk_product)>0) {
+
+		$weight = $prod->weight * pow(10, $prod->weight_units);
+		$length = $prod->length * pow(10, $prod->length_units);
+		$surface = $prod->surface * pow(10, $prod->surface_units);
+		$volume = $prod->volume * pow(10, $prod->volume_units);
+
+		$unite_achat = !empty( $prod->array_options['options_unite_'.$type] ) ? $prod->array_options['options_unite_'.$type] :  'unite';
+		
+		
+		$div_id_inputs = 'inputs'.md5($qty_input_selector);
+		?>
+		<script type="text/javascript">
+		<?php
+		
+		if($executiononload) {
+			?>
+			$(document).ready(function() {
+				setUnitEquivInputs();
+			});
+			<?php
+		}		
+		?>
+		function setUnitEquivInputs() {
+		
+			$qty = $('<?php echo $qty_input_selector; ?>');
+			
+			var coef_qty_to_weight = 1;
+			var coef_qty_to_surface = 1;
+			var coef_qty_to_volume = 1;
+			var coef_qty_to_length = 1;
+			
+			<?php
+			if($unite_achat == 'weight' && $weight>0) {
+				echo 'coef_qty_to_surface = '.($surface / $weight).';';		
+				echo 'coef_qty_to_volume = '.($volume / $weight).';';		
+				echo 'coef_qty_to_length = '.($length / $weight).';';		
+			}
+			elseif($unite_achat == 'volume' && $volume >0) { 
+				echo 'coef_qty_to_weight = '.($weight / $volume).';';
+				echo 'coef_qty_to_surface = '.($surface / $volume).';';		
+				echo 'coef_qty_to_length = '.($length / $volume).';';		
+			}
+			 
+			elseif($unite_achat == 'surface' && $surface >0) { 
+				echo 'coef_qty_to_weight = '.($weight / $surface).';';
+				echo 'coef_qty_to_volume = '.($volume / $surface).';';		
+				echo 'coef_qty_to_length = '.($length / $surface).';';		
+			}
+			 
+			elseif(($unite_achat == 'size' || $unite_achat == 'length') && $length >0) { 
+				echo 'coef_qty_to_surface = '.($surface / $length).';';		
+				echo 'coef_qty_to_weight = '.($weight / $length).';';
+				echo 'coef_qty_to_volume = '.($volume / $length).';';		
+			}
+			 
+			elseif($unite_achat == 'unite') { 
+				echo 'coef_qty_to_weight = '.($weight).';';
+				echo 'coef_qty_to_volume = '.($volume).';';		
+				echo 'coef_qty_to_surface = '.($surface).';';		
+				echo 'coef_qty_to_length = '.($length).';';		
+			}
+			 
+			?>	
+			$("#<?php echo $div_id_inputs ?>").remove();
+			$qty.after('<div id="<?php echo $div_id_inputs ?>" style="white-space:nowrap;"></div>');
+			
+			if(coef_qty_to_weight > 0 && coef_qty_to_weight!=1)$("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Weight') ?> : <input id="qty_weight<?php echo $suffix ?>" type="text" value="" size="8" name="qty_weight<?php echo $suffix ?>" /></div>');
+			if(coef_qty_to_surface > 0 && coef_qty_to_surface!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Surface') ?> : <input id="qty_surface<?php echo $suffix ?>" type="text" value="" size="8" name="qty_surface<?php echo $suffix ?>" /></div>');
+			if(coef_qty_to_volume > 0 && coef_qty_to_volume!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Volume') ?> : <input id="qty_volume<?php echo $suffix ?>" type="text" value="" size="8" name="qty_volume<?php echo $suffix ?>" /></div>');
+			if(coef_qty_to_length > 0 && coef_qty_to_length!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Length') ?> : <input id="qty_length<?php echo $suffix ?>" type="text" value="" size="8" name="qty_length<?php echo $suffix ?>" /></div>');
+				
+			$qty.change(function() {
+				$qty_surface = $('input[name="qty_surface<?php echo $suffix; ?>"]');
+				if($qty_surface.length>0) {
+					var new_value = coef_qty_to_surface * $(this).val();
+					
+					$qty_surface.val(new_value);
+					
+				}
+				
+				$qty_volume = $('input[name="qty_volume<?php echo $suffix; ?>"]');
+				if($qty_volume.length>0) {
+					var new_value = coef_qty_to_volume * $(this).val();
+					
+					$qty_volume.val(new_value);
+					
+				}
+				
+				$qty_weight = $('input[name="qty_weight<?php echo $suffix; ?>"]');
+				if($qty_weight.length>0) {
+					var new_value = coef_qty_to_weight * $(this).val();
+					
+					$qty_weight.val(new_value);
+					
+				}
+				
+				
+				$qty_length = $('input[name="qty_length<?php echo $suffix; ?>"]');
+				if($qty_length.length>0) {
+					var new_value = coef_qty_to_length * $(this).val();
+					
+					$qty_length.val(new_value);
+					
+				}
+				
+			});
+			
+			$('input[name="qty_surface<?php echo $suffix; ?>"]').change(function() {
+				var new_value = $(this).val()/ coef_qty_to_surface;
+				
+				$qty.val( new_value );
+				$qty.change();
+			});
+			
+			$('input[name="qty_volume<?php echo $suffix; ?>"]').change(function() {
+				var new_value = $(this).val() / coef_qty_to_volume;
+				
+				$qty.val( new_value );
+				$qty.change();
+			});
+			
+			
+			$('input[name="qty_weight<?php echo $suffix; ?>"]').change(function() {
+				var new_value = $(this).val() / coef_qty_to_weight;
+				
+				$qty.val( new_value );
+				$qty.change();
+			});
+			
+			
+			$('input[name="qty_length<?php echo $suffix; ?>"]').change(function() {
+				var new_value = $(this).val() / coef_qty_to_length;
+				
+				$qty.val( new_value );
+				$qty.change();
+			});
+			
+			$qty.change();
+			
+		
+		}
+
+		</script>
+		<?php
+		
+	}
+	
+}

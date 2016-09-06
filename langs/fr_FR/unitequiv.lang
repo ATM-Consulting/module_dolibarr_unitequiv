@@ -5,3 +5,9 @@ ATMAbout = Ce module a été développé par <a href="http://www.atm-consulting.
 
 UnitEquivSetup = Configuration du module UnitEquiv
 UnitEquivAbout = A propos du module UnitEquiv
+
+dispatchUnitEquiv=Réception vers stock
+StockUnit=unité de stockage
+
+Weight=Poids
+Length=Longueur

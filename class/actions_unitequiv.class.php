@@ -65,63 +65,69 @@ class ActionsUnitEquiv
 		if (in_array('supplierorderdispatch', explode(':', $parameters['context'])))
 		{
 		 		$suffix = &$parameters['suffix'];
-				global $db,$langs;
-				$prod=new Product($db);
-				if($prod->fetch($object->fk_product)>0) {
-
-					$weight = $prod->weight * pow(10, $prod->weight_units);
-					$length = $prod->length * pow(10, $prod->length_units);
-					$surface = $prod->surface * pow(10, $prod->surface_units);
-					$volume = $prod->volume * pow(10, $prod->volume_units);
-
-					$unite_achat = 'weight';
-					
-					?>
-					<script type="text/javascript">
-					$(document).ready(function() {
-					<?php
-					if($unite_achat == 'weight') { 
-					?>	
-						$qty = $('input[name="qty<?php echo $suffix; ?>"]');
-						<?php
-						
-					
-						if(!empty($surface)) {
-							echo '$qty.after(\'<br />  '.$langs->trans('Surface').' : <input id="qty_surface'.$suffix.'" type="text" value="" size="8" name="qty_surface'.$suffix.'" />\');';
-						}	
-					
-						?>
-						$qty.change(function() {
-							$qty_surface = $('input[name="qty_surface<?php echo $suffix; ?>"]');
-							if($qty_surface.length>0) {
-								var weight = $(this).val();
-								var new_value = <?php echo $surface / $weight ?> * weight;
-								
-								$qty_surface.val(new_value);
-								
-							}
-						});
-						
-						$('input[name="qty_surface<?php echo $suffix; ?>"]').change(function() {
-							var surface = $(this).val();
-							var new_value = surface / <?php echo $surface / $weight ?>;
-							
-							$qty.val( new_value );
-						});
-						
-						$qty.change();
-						
-					<?php } ?>
-					});
-
-					</script>
-					<?php
-					
-				}
+				
+				dol_include_once('/unitequiv/lib/unitequiv.lib.php');
+				addJSunitEquiv($object->fk_product, 'input[name="qty'.$suffix.'"]');
+				
 				
 				
 		}
 
 		
+	}
+	
+	function printObjectLine($parameters, &$object, &$action, $hookmanager) {
+		if ($action == 'editline' && in_array('propalcard', explode(':', $parameters['context'])))
+		{
+		
+			$id_line = $parameters['selected'];
+			$line = & $parameters['line'];
+		
+			if($line->id == $id_line && $line->fk_product>0) {
+				
+				dol_include_once('/unitequiv/lib/unitequiv.lib.php');
+				addJSunitEquiv($line->fk_product, '#qty');
+				
+			}
+			
+				
+			
+		}
+	}
+	
+	function formAddObjectLine($parameters, &$object, &$action, $hookmanager) {
+		
+				
+		if (in_array('propalcard', explode(':', $parameters['context'])))
+		{
+			?>
+			<script type="text/javascript">
+			$(document).ready(function() {
+				
+				$('body').append('<div id="unitequivscriptexecution" style="display:none;"></div>');
+				
+				$("#idprod").change(function() {
+					
+					var fk_product = $(this).val();
+					
+					$.ajax({
+						url:"<?php echo dol_buildpath('/unitequiv/script/interface.php',1) ?>"
+						,data:{
+							"get":"inputs"
+							,"type":"vente"
+							,"fk_product":fk_product
+							,"field":"#qty"
+						}
+						,dataType:"html"
+					}).done(function(data) {
+						$("#unitequivscriptexecution").html(data);
+						setUnitEquivInputs();
+					});
+					
+				});
+			});
+			</script>
+			<?php
+		}
 	}
 }

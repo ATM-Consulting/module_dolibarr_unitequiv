@@ -88,7 +88,7 @@ class modUnitEquiv extends DolibarrModules
 		//							'workflow' => array('WORKFLOW_MODULE1_YOURACTIONTYPE_MODULE2'=>array('enabled'=>'! empty($conf->module1->enabled) && ! empty($conf->module2->enabled)', 'picto'=>'yourpicto@unitequiv')) // Set here all workflow context managed by module
 		//                        );
 		$this->module_parts = array(
-			'hooks'=>array('supplierorderdispatch')
+			'hooks'=>array('supplierorderdispatch','propalcard')
 		);
 
 		// Data directories to create when module is enabled.
@@ -257,6 +257,12 @@ class modUnitEquiv extends DolibarrModules
 
 		dol_include_once('/unitequiv/config.php');
 		dol_include_once('/unitequiv/script/create-maj-base.php');
+
+
+		dol_include_once('/core/class/extrafields.class.php');
+        $extrafields=new ExtraFields($this->db);
+		$res = $extrafields->addExtraField('unite_stock', 'StockUnit', 'select', 0, '', 'product', 0, 0, '', array("options"=> array("weight" => "Poids", "size" => "Longueur", "surface" => "Surface", "volume" => "Volume", "unite" => "Unité")));		
+		
 
 		$result=$this->_load_tables('/unitequiv/sql/');
 
