@@ -141,14 +141,14 @@ class modUnitEquiv extends DolibarrModules
 
         if((int)DOL_VERSION == 5) {
                 $this->tabs = array(
-			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_50/fourn/commande/dispatch.php/dispatch.php?id=__ID__'
+			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_50/fourn/commande/dispatch.php?id=__ID__'
 	                ,'supplier_order:-dispatch'
                 );
 
         }
 	else if((int)DOL_VERSION == 4) {
         	$this->tabs = array(
-			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_40/fourn/commande/dispatch.php/dispatch.php?id=__ID__'
+			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_40/fourn/commande/dispatch.php?id=__ID__'
         	,'supplier_order:-dispatch'
 		);
 
