@@ -138,11 +138,24 @@ class modUnitEquiv extends DolibarrModules
 		// 'stock'            to add a tab in stock view
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
-        $this->tabs = array(
+
+        if((int)DOL_VERSION == 5) {
+                $this->tabs = array(
+			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_50/fourn/commande/dispatch.php/dispatch.php?id=__ID__'
+	                ,'supplier_order:-dispatch'
+                );
+
+        }
+	else if((int)DOL_VERSION == 4) {
+        	$this->tabs = array(
 			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_40/fourn/commande/dispatch.php/dispatch.php?id=__ID__'
         	,'supplier_order:-dispatch'
 		);
 
+	}
+	else {
+		$this->tabs=array();
+	}
         // Dictionaries
 	    if (! isset($conf->unitequiv->enabled))
         {
