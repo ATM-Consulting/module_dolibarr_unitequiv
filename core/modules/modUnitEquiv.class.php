@@ -138,9 +138,9 @@ class modUnitEquiv extends DolibarrModules
 		// 'stock'            to add a tab in stock view
 		// 'thirdparty'       to add a tab in third party view
 		// 'user'             to add a tab in user view
-        $this->tabs = array(
-			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_40/fourn/commande/dispatch.php/dispatch.php?id=__ID__'
-        	,'supplier_order:-dispatch'
+	        $this->tabs = array(
+			'supplier_order:+dispatchUnitEquiv:dispatchUnitEquiv:unitequiv@unitequiv::/unitequiv/htdocs_40/fourn/commande/dispatch.php?id=__ID__'
+        		,'supplier_order:-dispatch'
 		);
 
         // Dictionaries
