@@ -52,7 +52,7 @@ class modUnitEquiv extends DolibarrModules
 
 		// Family can be 'crm','financial','hr','projects','products','ecm','technic','other'
 		// It is used to group modules in module setup page
-		$this->family = "ATM";
+		$this->family = "ATM Consulting";
 		// Module label (no space allowed), used if translation string 'ModuleXXXName' not found (where XXX is value of numeric property 'numero' of module)
 		$this->name = preg_replace('/^mod/i','',get_class($this));
 		// Module description, used if translation string 'ModuleXXXDesc' not found (where XXX is value of numeric property 'numero' of module)
@@ -96,7 +96,7 @@ class modUnitEquiv extends DolibarrModules
 		$this->dirs = array();
 
 		// Config pages. Put here list of php page, stored into unitequiv/admin directory, to use to setup module.
-		$this->config_page_url = array("unitequiv_setup.php@unitequiv");
+//		$this->config_page_url = array("unitequiv_setup.php@unitequiv");
 
 		// Dependencies
 		$this->hidden = false;			// A condition to hide module
