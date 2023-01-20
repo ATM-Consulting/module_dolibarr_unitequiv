@@ -128,13 +128,13 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 			$("#<?php echo $div_id_inputs ?>").remove();
 			$qty.after('<div id="<?php echo $div_id_inputs ?>" style="white-space:nowrap;"></div>');
 			
-			if(coef_qty_to_weight > 0 && coef_qty_to_weight!=1)$("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Weight') ?> : <input id="qty_weight<?php echo $suffix ?>" type="text" value="" size="8" name="qty_weight<?php echo $suffix ?>" /></div>');
-			if(coef_qty_to_surface > 0 && coef_qty_to_surface!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Surface') ?> : <input id="qty_surface<?php echo $suffix ?>" type="text" value="" size="8" name="qty_surface<?php echo $suffix ?>" /></div>');
-			if(coef_qty_to_volume > 0 && coef_qty_to_volume!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Volume') ?> : <input id="qty_volume<?php echo $suffix ?>" type="text" value="" size="8" name="qty_volume<?php echo $suffix ?>" /></div>');
-			if(coef_qty_to_length > 0 && coef_qty_to_length!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Length') ?> : <input id="qty_length<?php echo $suffix ?>" type="text" value="" size="8" name="qty_length<?php echo $suffix ?>" /></div>');
+			if(coef_qty_to_weight > 0 && coef_qty_to_weight!=1)$("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Weight') ?> : <input id="qty_weight" type="text" value="" size="8" name="qty_weight" /></div>');
+			if(coef_qty_to_surface > 0 && coef_qty_to_surface!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Surface') ?> : <input id="qty_surface" type="text" value="" size="8" name="qty_surface" /></div>');
+			if(coef_qty_to_volume > 0 && coef_qty_to_volume!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Volume') ?> : <input id="qty_volume" type="text" value="" size="8" name="qty_volume" /></div>');
+			if(coef_qty_to_length > 0 && coef_qty_to_length!=1) $("#<?php echo $div_id_inputs ?>").append('<div><?php echo $langs->trans('Length') ?> : <input id="qty_length" type="text" value="" size="8" name="qty_length" /></div>');
 				
 			$qty.change(function() {
-				$qty_surface = $('input[name="qty_surface<?php echo $suffix; ?>"]');
+				$qty_surface = $('input[name="qty_surface"]');
 				if($qty_surface.length>0) {
 					var new_value = coef_qty_to_surface * $(this).val();
 					
@@ -142,7 +142,7 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 					
 				}
 				
-				$qty_volume = $('input[name="qty_volume<?php echo $suffix; ?>"]');
+				$qty_volume = $('input[name="qty_volume"]');
 				if($qty_volume.length>0) {
 					var new_value = coef_qty_to_volume * $(this).val();
 					
@@ -150,7 +150,7 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 					
 				}
 				
-				$qty_weight = $('input[name="qty_weight<?php echo $suffix; ?>"]');
+				$qty_weight = $('input[name="qty_weight"]');
 				if($qty_weight.length>0) {
 					var new_value = coef_qty_to_weight * $(this).val();
 					
@@ -159,7 +159,7 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 				}
 				
 				
-				$qty_length = $('input[name="qty_length<?php echo $suffix; ?>"]');
+				$qty_length = $('input[name="qty_length"]');
 				if($qty_length.length>0) {
 					var new_value = coef_qty_to_length * $(this).val();
 					
@@ -169,14 +169,14 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 				
 			});
 			
-			$('input[name="qty_surface<?php echo $suffix; ?>"]').change(function() {
+			$('input[name="qty_surface"]').change(function() {
 				var new_value = $(this).val()/ coef_qty_to_surface;
 				
 				$qty.val( new_value );
 				$qty.change();
 			});
 			
-			$('input[name="qty_volume<?php echo $suffix; ?>"]').change(function() {
+			$('input[name="qty_volume"]').change(function() {
 				var new_value = $(this).val() / coef_qty_to_volume;
 				
 				$qty.val( new_value );
@@ -184,7 +184,7 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 			});
 			
 			
-			$('input[name="qty_weight<?php echo $suffix; ?>"]').change(function() {
+			$('input[name="qty_weight"]').change(function() {
 				var new_value = $(this).val() / coef_qty_to_weight;
 				
 				$qty.val( new_value );
@@ -192,7 +192,7 @@ function addJSunitEquiv($fk_product, $qty_input_selector, $executiononload=true,
 			});
 			
 			
-			$('input[name="qty_length<?php echo $suffix; ?>"]').change(function() {
+			$('input[name="qty_length"]').change(function() {
 				var new_value = $(this).val() / coef_qty_to_length;
 				
 				$qty.val( new_value );

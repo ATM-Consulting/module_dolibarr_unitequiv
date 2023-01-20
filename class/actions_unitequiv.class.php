@@ -100,6 +100,7 @@ class ActionsUnitEquiv
 				
 		if (in_array('propalcard', explode(':', $parameters['context'])))
 		{
+            dol_include_once('/unitequiv/lib/unitequiv.lib.php');
 			?>
 			<script type="text/javascript">
 			$(document).ready(function() {
